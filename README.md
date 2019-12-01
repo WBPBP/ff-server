@@ -1,2 +1,3 @@
-# ff-server
-압력감지 시스템 - 서버
+# preshoe-server
+
+Preshoe - 서버
