@@ -1,7 +1,7 @@
-var PythonShell = require('Python-shell');
+var {PythonShell} = require('python-shell');
 var options = {
 	mode : 'text',
-	encoding:'ufc-8',
+	encoding:'utf-8',
 	pythonOptions:['-u'],
 	scriptPath: '',
 	pythonPath: '',

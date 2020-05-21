@@ -26,7 +26,7 @@ router.post('/', function (req, res, next) {
 		if(err){
 			res.send(500);
 		}
-		else{
+		else{//401
 		db_result=db_data;
 		let user_email = db_result[0].user_email;
 		console.log(user_email);

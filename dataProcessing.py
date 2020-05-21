@@ -3,7 +3,7 @@ import json
 import numpy as np
 import pandas as pd;
 import copy
-
+import random
 from walkData import normalGait, out_toedGait, in_toedGait, craneGait, elevenGait, diseasePrediction
 # walkData.py 파일에 기준이 되는 데이터들이나 comment를 적어놓았어요!
 
@@ -15,30 +15,45 @@ def balanceCheck(static_pressure_sum):
     standard=15; # 척추측만증 판단 임시기준, 실험 후 변경 예정
     cnt=sum(abs(i)>standard for i in res); # 압력의 차이가 기준보다 높은 경우가 얼마나 나오는지 count, 여기 변경했어요!!!!
     comment=""
-    if res1 > 0: # '왼-오'로 계산을 했기 때문에 압력 차의 평균 값이 양수인 경우 왼쪽으로 치우쳐져 있음
+    if res1 > 2: # '왼-오'로 계산을 했기 때문에 압력 차의 평균 값이 양수인 경우 왼쪽으로 치우쳐져 있음
         comment = "몸의 무게중심이 왼쪽으로 치우쳐져 있는 경향이 보입니다."
-    elif res1 < 0: # 압력 차의 평균이 음수인 경우 오른쪽으로 치우쳐져 있음
+    elif res1 < -2: # 압력 차의 평균이 음수인 경우 오른쪽으로 치우쳐져 있음
         comment = "몸의 무게중심이 오른쪽으로 치우쳐져 있는 경향이 보입니다."
     else: # 압력 차의 평균이=0인 경우 무게중심이 잘 잡혀있음
         comment = "몸무게가 양발에 고르게 분포해있어 몸의 균형은 안정적으로 보입니다."
-    if cnt > len(res) // 2: #압력 차이가 기준보다 높은 것들의 수가 전체 개수의 반 이상이면 척추측만증 의심
+    if (cnt > len(res) // 2) and (abs(res1)>2): #압력 차이가 기준보다 높은 것들의 수가 전체 개수의 반 이상이면 척추측만증 의심
         comment = comment + " 또한 현재 양쪽 발에 실리는 힘의 차이가 많은 것으로 보아 척추측만증을 의심해볼 수 있습니다."
     return comment # 몸의 무게중심이 어느쪽으로 치우쳐져 있는지, 척추측만증이 의심되는지에 대한 comment (문자열 형식입니다)
 
-def pressureGraph(footstep_pressure_sum):
-    # 걷는 동안의 왼, 오의 압력 합(센서12개)변화 그래프를 그리기 위한 값 형식 만들기
-    left=np.arange(0.0, len(footstep_pressure_sum[0])*0.05-0.04, 0.05);
-    right=x=np.arange(0.0, len(footstep_pressure_sum[1])*0.05-0.04, 0.05);
-    # 각 왼/오의 x축 값을 만드는 것으로 1초에 20번씩 측정이 되기 때문에 0.05초에 하나의 값이라 판단하여
-    # x축 값을 걸은시간으로 하여 0부터 0.05씩 증가하도록 했습니다.
-    left_sum=[left, footstep_pressure_sum[0]]
-    # 왼발의 압력 합(센서12개)변화 그래프를 그리기 위한 [x축 값, y축 값]
-    right_sum=[right, footstep_pressure_sum[1]]
-    # 오른발의 압력 합(센서12개)변화 그래프를 그리기 위한 [x축 값, y축 값]
-    return left_sum, right_sum
-
 def avgList(list): # 형식이 list인 경우 전체 원소에 대한 평균을 구하는 함수
     return sum(list, 0.0)/len(list)
+
+def pressureGraph(footstep_pressure_sum):
+    # 걷는 동안의 왼, 오의 압력 합(센서12개)변화 그래프를 그리기 위한 값 형식 만들기
+    left_mean=[]
+    right_mean=[]
+    index=0;
+    for i in range(0, len(footstep_pressure_sum[0])-600, 600):
+        #print(footstep_pressure_sum[1][i:i+600])
+        left_mean.append(avgList(footstep_pressure_sum[0][i:i+600]))
+        right_mean.append(avgList(footstep_pressure_sum[1][i:i+600]))
+        index=i+600;
+    left_mean.append(avgList(footstep_pressure_sum[0][index:]))
+    right_mean.append(avgList(footstep_pressure_sum[1][index:]))
+    last=len(footstep_pressure_sum[0][index:])
+    left = np.arange(0, (len(left_mean)-1) * 30-29, 30);
+    right = np.arange(0, (len(right_mean)-1) * 30-29, 30);
+    left=left.tolist()
+    left.append(left[len(left)-1]+(last/600)*30)
+    right=right.tolist()
+    right.append(right[len(right)-1]+(last/600)*30)
+    left_mean.insert(0, 0)
+    left_sum=[left, left_mean]
+    # 왼발의 압력 합(센서12개)변화 그래프를 그리기 위한 [x축 값, y축 값]
+    right_mean.insert(0, 0)
+    right_sum=[right, right_mean]
+    # 오른발의 압력 합(센서12개)변화 그래프를 그리기 위한 [x축 값, y축 값]
+    return left_sum, right_sum
 
 def walkCheck(footstep_pressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
     left=copy.deepcopy(footstep_pressure[0])
@@ -111,10 +126,11 @@ def walkCheck(footstep_pressure): # 걸음걸이 습관 파악 및 질병예측�
     #질병 아이콘은 한 걸음걸이(한 번호) 당 2~3개씩해서 안드로이드에서 번호에 맞는 아이콘을 출력하도록 할거에요
     #{0:"정상걸음", 1:"팔자걸음", 2:"안짱걸음", 3:"학다리 걸음", 4:"11자 걸음"}
 
-def run(static_pressure_sum, footstep_pressure, footstep_pressure_sum): #전체 수행 함수(main이 안될 경우를 대비해 함수로 만들어 놓았어요!)
+def run(static_pressure_sum, footstep_pressure,step, footstep_pressure_sum): #전체 수행 함수(main이 안될 경우를 대비해 함수로 만들어 놓았어요!)
     static_comment = balanceCheck(static_pressure_sum);
     leftSum, rightSum = pressureGraph(footstep_pressure_sum)
     per, gait_comment, diseaseNum = walkCheck(footstep_pressure)
+
     dict = {"staticPressureRes": static_comment, "pressureGraphLeft": leftSum, "pressureGraphRight": rightSum,
             "step": step,
             "percent": per, "gaitComment": gait_comment, "diseaseNum": diseaseNum}
@@ -129,23 +145,36 @@ def run(static_pressure_sum, footstep_pressure, footstep_pressure_sum): #전체 
                 {0:"정상걸음", 1:"팔자걸음", 2:"안짱걸음", 3:"학다리 걸음", 4:"11자 걸음"}
                 0 : 아이콘 X, 1 : 허리디스크, 요통, 퇴행성 관절염 ,....
     '''
-    return json.dumps(dict) #json으로 형식 변
 
-if __name__=="__main__":
-    static_pressure_sum = sys.argv[1];
-    footstep_pressure = sys.argv[2];
-    step = sys.argv[3];
-    footstep_pressure_sum = sys.argv[4];
-    # node js에서 args로 넘겨준다고 생각하고 각 요소를 변수에 저장하였습니다.
+    print(json.dumps(dict, ensure_ascii=False))
+    #return json.dumps(dict)
 
-    #run(static_pressure_sum, footstep_pressure, footstep_pressure_sum)
-    static_comment = balanceCheck(static_pressure_sum);
-    leftSum, rightSum = pressureGraph(footstep_pressure_sum)
-    per, gait_comment, diseaseNum = walkCheck(footstep_pressure)
-    dict = {"staticPressureRes": static_comment, "pressureGraphLeft": leftSum, "pressureGraphRight": rightSum,
-            "step": step,
-            "percent": per, "gaitComment": gait_comment, "diseaseNum": diseaseNum}
-    print(json.dumps(dict))
-    # 내용은 run과 같습니다.
+
+# 실제 사용시에 입력받을 부분입니다.
+
+json_data=sys.argv[1]
+print(sys.argv)
+
+data=json.loads(json_data)
+#print(data)
+static_pressure_sum = data["key1"]
+footstep_pressure = data["key2"]
+step = data["key3"]
+footstep_pressure_sum = data["key4"]
+#print(static_pressure_sum)
+
+static_pressure_sum=[[],[]]
+footstep_pressure=[[],[]]
+step=1300
+footstep_pressure_sum=[[],[]]
+for i in range(120):
+    static_pressure_sum[0].append(random.randint(0, 200))
+    static_pressure_sum[1].append(random.randint(0, 200))
+    footstep_pressure[0].append(random.randint(0, 16))
+    footstep_pressure[1].append(random.randint(0, 16))
+for i in range(3400):
+    footstep_pressure_sum[0].append(random.randint(0, 200))
+    footstep_pressure_sum[1].append(random.randint(0, 200))
+run(static_pressure_sum, footstep_pressure,step,footstep_pressure_sum)
 
 
