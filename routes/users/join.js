@@ -31,10 +31,7 @@ router.post('/addUser',function(req,res,next){
 	const user_wpattern = req.body.user_wpattern;
 	crypto.randomBytes(32,(err,buffer)=>{
 		if(err){
-			res.status(500).send({
-				stat : "fail",
-				msg : 6
-			});
+			res.send(500);
 		}
 		else{
 			let salt = buffer.toString('base64');
@@ -56,7 +53,7 @@ router.post('/addUser',function(req,res,next){
 					}
 					else{
 						console.log('wrong form of email');
-						res.send(401);	//Unauthrized	 
+						res.send(400);	//bad request	 
 					}
 									  
 					if( key == 1){ //중복이 아니므로

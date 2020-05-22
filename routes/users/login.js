@@ -23,11 +23,16 @@ router.post('/', function (req, res, next) {
 	var pwd = req.body.user_pwd;
 	//메일이 없을때 타입오류 나느데 어떻게 처리할까나 ㅠㅠㅠㅠ 
 	db.all('SELECT * from user WHERE user_email = ?',user, function(err,db_data){
+		db_result=db_data;
 		if(err){
 			res.send(500);
 		}
-		else{//401
-		db_result=db_data;
+		else if(db_result==0){
+			res.send(401);
+			console.log("your email is wrong")
+			
+		}
+		else{
 		let user_email = db_result[0].user_email;
 		console.log(user_email);
 		}

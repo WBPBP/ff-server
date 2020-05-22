@@ -7,7 +7,6 @@ const db = new sqlite3.Database('/home/ec2-user/myapp/data/report.db', sqlite3.O
     if (err) {
         console.log(err);
     } else {
-        //console.log('connected database in join.js ');
     }
 });
 
@@ -16,7 +15,7 @@ router.get('/', function (req, res, next) {
 	
 });
 
-//투입할 데이터
+//투입할 데이터 안드로이드에서 오면 나 이거 삭제해도됨
 const testData = {
 	key1: 3,
 	key2: 4,
@@ -67,18 +66,12 @@ const user_email = req.body.user_email;
 	PythonShell.run('dataProcessing.py',options,function(err,results){
 		if(err){
 			console.log('fail');
-			console.log(err);
+			res.send(500);
 		}
 		else{	
-			console.log('text : ',results);
-			//보고서 결과를 파일로 만든다. 
-						/** 현재 실행한 파일의 이름과 Path*/
-			console.log('finaname : ' + __filename);
-
-			/* 현재 실행한 파일의 Path */
-			console.log('dirname : ' + __dirname);
-
-
+			console.log('잘 넘어갔다왔음');
+		
+			//항상 저 폴더에 파일들이 저장되어있으며 db에 유저의 이메일과 파일명이 저장되어있다(나중에 들고올 수 있도록)
 			fs.writeFile('./routes/reports/reportsResource/'+date+'.json',results,function(err){
 				if(err){
 					console.log(err);
@@ -87,7 +80,8 @@ const user_email = req.body.user_email;
 					const query =`insert into report (user_email,file_name)values('${user_email}','${date}')`;
 					db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
 						console.log('insert user information :',user_email);
-					res.send(date)});
+					//res.json(date.json)
+					}); //잘 넘어가는지 모르겠음.. 
 					console.log('보고서 완료');
 				}
 			});
