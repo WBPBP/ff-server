@@ -17,21 +17,9 @@ app.use('/join',joinRouter);
 var loginRouter = require('./routes/users/login');
 app.use('/login',loginRouter);
 
-var{PythonShell} = require('python-shell');
-var options = {
-	mode : 'text',
-	encoding:'utf-8',
-	pythonOptions:['-u'],
-	scriptPath: '',
-	pythonPath: '',
-	args:['value1','value2','value3']
-	
-};
+var sendingRouter = require('./routes/reports/send');
+app.use('/send',sendingRouter);
 
-PythonShell.run('test.py',options,function(err,results){
-	if(err) throw err;
-	console.log('results : %j',results);
-});
 
 // app.configure(function(){
 // app.use(express.bodyParser());	

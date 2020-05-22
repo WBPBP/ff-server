@@ -51,10 +51,10 @@ router.post('/', function (req, res, next) {
 				  crypto.pbkdf2(pwd,salt,100000,64,'sha512', function(err,hashed){
 					  let saltPWD =hashed.toString('base64');
 					  if (saltPWD==user_pwd) {
-						req.session.is_logined = true;
-						req.session.save(function(req,res,next){
-						  console.log('save');
-						});  
+						//req.session.is_logined = true;
+						//req.session.save(function(req,res,next){
+						 // console.log('save');
+						//});  
 						console.log('login success');
 						res.send(200);
 					  } 
