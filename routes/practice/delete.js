@@ -11,28 +11,43 @@ const db = new sqlite3.Database('/home/ec2-user/myapp/data/user.db', sqlite3.OPE
 });
 
 
+
 router.get('/', function (req, res, next) {
     res.render('delete');
 });
 
 router.delete('/', function (req, res, next) {
-	
-	var user = req.body.user_name;
-    db.run('DELETE FROM user WHERE user_name = ?',user,function(err,db_data){
-		if(err==null&&user!=null)// 손봐야함.. 흠.... 이미 지워진 애들도 지워졌다고 알려주느느 바보... 
-		{
-			console.log('delete user : '+user);
-			res.send('delete user success');
-			db.serialize();
+	var user = req.body.user_email;
+    db.all('SELECT user_email from user a INNER JOIN report b on a.user_email = b.user_email WHERE a.user_email = ?',user, function(err,db_data){
+		db_result=db_data;
+		console.log(db_result);
+		if(err){
+			res.send(500);
+			console.log("dd");
 		}
-		
+		else if(db_result.length==0){
+			res.send(401);
+			console.log("your email is not existed");
+		}
 		else{
-			console.log(err);
-			console.log('delete failure');
-			res.send(-1);
+			db.run('DELETE FROM user INNER JOIN report on user.user_email = report.user_email WHERE user_email = ?',user,function(err,db_data){
+				if(err){
+					res.send(500);
+					console.log("dd3")
+				}
+				else{
+					res.send(200);
+					console.log("success to delete your email : "+user);
+				}
+			});
 		}
+	});
+	
+	
 		
-    });
+
+		
+		
 });
 
 

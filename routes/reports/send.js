@@ -3,7 +3,7 @@ var fs = require("fs");
 var express = require('express');
 var router = express.Router();
 var sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('/home/ec2-user/myapp/data/report.db', sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database('/home/ec2-user/myapp/data/user.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err);
     } else {
@@ -53,6 +53,7 @@ function getFormatDate(date){
 
 router.post('/info',function(req,res,next){
 //옵션을 준다
+
 const user_email = req.body.user_email;
 	var options = {
 		mode : 'text',
@@ -79,6 +80,7 @@ const user_email = req.body.user_email;
 				else{
 					const query =`insert into report (user_email,file_name)values('${user_email}','${date}')`;
 					db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
+					res.send(200);
 						console.log('insert user information :',user_email);
 					//res.json(date.json)
 					}); //잘 넘어가는지 모르겠음.. 

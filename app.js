@@ -20,6 +20,9 @@ app.use('/login',loginRouter);
 var sendingRouter = require('./routes/reports/send');
 app.use('/send',sendingRouter);
 
+var deleteRouter = require('./routes/practice/delete');
+app.use('/delete',deleteRouter);
+
 
 // app.configure(function(){
 // app.use(express.bodyParser());	
