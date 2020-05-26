@@ -27,7 +27,12 @@ var json = JSON.stringify(testData);
 // var obj = JSON.parse(json);  얘는 복구~
 // console.log(json);
 
-//파일명을 위한 날짜+시간 조합
+
+
+
+
+router.post('/info',function(req,res,next){
+//옵션을 준다
 var date = new Date();
 
 function getFormatDate(date){
@@ -48,13 +53,7 @@ function getFormatDate(date){
     return  year + '' + month + '' + day+'_'+hour+''+minute+''+second;
 }
 
-
-
-
-router.post('/info',function(req,res,next){
-//옵션을 준다
-
-const user_email = req.body.user_email;
+const user = req.body.user_email;
 	var options = {
 		mode : 'text',
 		encoding:'utf-8',
@@ -78,13 +77,25 @@ const user_email = req.body.user_email;
 					console.log(err);
 				}
 				else{
-					const query =`insert into report (user_email,file_name)values('${user_email}','${date}')`;
-					db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
-					res.send(200);
-						console.log('insert user information :',user_email);
-					//res.json(date.json)
-					}); //잘 넘어가는지 모르겠음.. 
-					console.log('보고서 완료');
+					db.all('SELECT user_id from user WHERE user_email = ?',user, function(err,db_data){
+						
+						if(err){
+							res.send(500);
+						}
+						
+						else{
+							user_id= db_data[0]["user_id"];
+							console.log(user_id);
+						}
+						
+						const query =`insert into report (user_id,file_name)values('${user_id}','${date}')`;
+						db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
+							res.send(200);
+							console.log('insert user information :',user);
+						//res.json(date.json)
+						}); //잘 넘어가는지 모르겠음.. 
+						console.log('보고서 완료');
+					});
 				}
 			});
 		}

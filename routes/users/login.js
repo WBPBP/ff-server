@@ -19,6 +19,7 @@ router.get('/', function (req, res, next) {
 //로그인 하는 라우터 
 router.post('/', function (req, res, next) {
 	//아이디 있는지 체크 
+	
 	var user = req.body.user_email;
 	var pwd = req.body.user_pwd;
 	//메일이 없을때 타입오류 나느데 어떻게 처리할까나 ㅠㅠㅠㅠ 
@@ -60,6 +61,7 @@ router.post('/', function (req, res, next) {
 						//req.session.save(function(req,res,next){
 						 // console.log('save');
 						//});  
+						req.session.userEmail = user;
 						console.log('login success');
 						res.send(200);
 					  } 
@@ -81,7 +83,14 @@ router.post('/', function (req, res, next) {
 //로그인 하는 라우터. 세션종료 
 router.get('/logout',function(req,res,next){
 	req.session.destroy(function(err){
-		req.redirect('/');
+		if(err){
+			res.send(500);
+		}
+		else{
+			res.clearCookie('sid');
+			res.send(200);
+			req.redirect('/login');
+		}
 	}); //콜백함수는 세션이 다 종료된 다음 호출이 된다. 
 });
 

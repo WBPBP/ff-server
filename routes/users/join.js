@@ -28,7 +28,6 @@ router.post('/addUser',function(req,res,next){
 	const user_age = req.body.user_age;
 	const user_weight = req.body.user_weight;
 	const user_height = req.body.user_height;
-	const user_wpattern = req.body.user_wpattern;
 	crypto.randomBytes(32,(err,buffer)=>{
 		if(err){
 			res.send(500);
@@ -37,18 +36,18 @@ router.post('/addUser',function(req,res,next){
 			let salt = buffer.toString('base64');
 			crypto.pbkdf2(req.body.user_pwd,salt,100000,64,'sha512',function(err,hashed){
 				let saltPWD=hashed.toString('base64');
-				const query = `insert into user(user_email, user_pwd,salt, user_gender,user_age,user_weight,user_height,user_wpattern) values ('${user_email}','${saltPWD}','${salt}','${user_gender}','${user_age}','${user_weight}','${user_height}','${user_wpattern}')`;				
+				const query = `insert into user(user_email, user_pwd, user_gender,user_age,user_weight,user_height) values (?,?,?,?,?,?)`;				
 				//정보기입후 아이디 중복 검사
 				db.all('SELECT * FROM user WHERE user_email = ?',user,function(err,db_data){ //그 아이디가 있는지 확인 
 					
-					db_result=db_data;			  
+					db_result=db_data;						
 					if(validator.isEmail(user)){
 						if(db_result==0){
 							key=1;}
 						else{
 										  
 							console.log('sorry, that ID is already existed');
-							res.send(400); //bad request
+							res.send(401); //bad request
 							}
 					}
 					else{
@@ -57,9 +56,9 @@ router.post('/addUser',function(req,res,next){
 					}
 									  
 					if( key == 1){ //중복이 아니므로
-						db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
+						db.run(query,user_email,saltPWD,user_gender,user_age,user_weight,user_height,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
 							console.log('insert user table :',user_email);
-							res.send(200); //OK
+							res.send(201); //OK
 						});
 					}
 					else { //아님 페일 

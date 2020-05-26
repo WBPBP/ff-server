@@ -10,7 +10,6 @@ app.use(bodyParser.urlencoded({extended:true}))
 var PythonShell = require('python-shell');
 
 
-
 var joinRouter = require('./routes/users/join');
 app.use('/join',joinRouter);
 
@@ -22,6 +21,9 @@ app.use('/send',sendingRouter);
 
 var deleteRouter = require('./routes/practice/delete');
 app.use('/delete',deleteRouter);
+
+var showshow = require('./routes/practice/show');
+app.use('/show',showshow);
 
 
 // app.configure(function(){
@@ -42,5 +44,3 @@ app.use('/delete',deleteRouter);
 	 
    console.log('Connected WBPBP 3000 port!');
  });
- 
- module.exports = app;
