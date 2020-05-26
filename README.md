@@ -1,71 +1,153 @@
 # preshoes-server
+
 사용자의 정보와 보고서를 저장해주는 백업 서버
 
-## database
-### user.db
+## 디렉토리 구조
 
-#### tables
-- user : 사용자의 정보들이 들어가는 테이블    
-이메일주소 : user_email    
-해싱처리된 비밀번호 : user_pwd    
-salt 값(입력받지는 않음) : salt    
-성별 : user_gender    
-나이 : user_age    
-몸무게 : user_weight    
-키 : user_height    
+~~~
+app
+  └ again                       → 이 친구는 무엇을 하는 친구일까요..?
+  └ data                        →
+  └ public                      →
+  └ routes                      →
+  └ views                       →
+  └ app.js                      →
+  └ dataProcessing.py           →
+  └ express-session.js          →
+  └ index.js                    →
+  └ package.json                →
+  └ README.md                   →
+  └ walkData.py                 →
+~~~
 
-- report : 사용자의 계정과 보고서 파일명이 저장된 테이블    
-이메일 주소 : user_email    
-파일명 : file_name    
+## 데이터베이스
 
+데이터베이스로 **SQLite** 를 사용합니다.
+
+테이블 구조는 다음과 같습니다.
+
+### USER
+
+**사용자의 정보들이 들어가는 테이블**
+
+- `user_email`: 이메일 주소
+- `user_pwd`: 해싱 처리된 비밀번호
+- `user_gender`: 성별
+- `user_age`: 나이
+- `user_weight`: 체중
+- `user_height`: 키
+
+### REPORT
+
+**사용자의 계정과 보고서 파일명이 저장된 테이블**
+
+- `user_emal`: 이메일 주소
+- `file_name`: 파일명
 
 
 ## API
 
-### GET
+### POST /join/addUser
 
-- /logout : 로그아웃     
-세션 반환 후 홈화면으로 돌아감 
+**회원가입**
 
-### POST
+#### 요청 모델
 
-- /join/addUser :회원가입    
-이메일주소 : user_email    
-해싱처리된 비밀번호 : user_pwd    
-salt 값(입력받지는 않음) : salt    
-성별 : user_gender    
-나이 : user_age    
-몸무게 : user_weight    
-키 : user_height    
+`application/json`
 
-로 입력값을 받고 있으며 json 형식 사용     
-이메일 중복확인 절차     
-이메일 형식이 아닐 경우 ->400    
-이미 있는 이메일일 경우 ->401    
-생성 성공 ->201    
+- `user_email`: 이메일 주소
+- `user_pwd`: 비밀번호
+- `user_gender`: 성별
+- `user_age`: 나이
+- `user_weight`: 체중
+- `user_height`: 키
 
+#### 응답 코드
 
-- /login : 로그인 
+- 201: 회원가입 성공
+- 400: 이메일 형식에 문제가 있음
+- 401: 이메일이 이미 존재함
 
-서버오류 ->500    
-이메일이 존재하지 않으면(회원가입이 안되어있으면) ->401    
-이메일이 있으면 비밀번호 검사 후 맞으면 ->200     
-로그인 실패 ->400     
+#### 응답 모델
+
+없음
 
 
-- /send/info : 보고서 생성 및 저장 후 안드로이드에게 파일 전송 
+### POST /login
 
-안드로이드에서의 입력값을 json파일로 변환 후 파이썬파일에 있는 함수 리턴값을 다시 가져와서 그 내용을 보고서파일로 작성 후 안드로이드에 전송 
+#### 요청 모델
+
+`application/json`
+
+- `user_email`: 이메일 주소
+- `user_pwd`: 비밀번호
+
+#### 응답 코드
+
+- 200: 사용자가 존재하며 비밀번호가 올바름
+- 400: 로그인 실패
+- 401: 사용자가 존재하지 않음
+- 500: 서버 내부 에러
+
+#### 응답 모델
+
+없음
+
+
+### GET /logout
+
+**로그아웃**
+
+세션 반환 후 홈화면으로 돌아감
+
+#### 요청 모델
+
+없음
+
+#### 응답 코드
+
+- 200: 성공
+- 500: 서버 내부 에러
+
+#### 응답 모델
+
+없음
+
+
+### Delete /delete
+
+**회원 삭제**
+
+#### 요청 모델
+
+-
+
+#### 응답 코드
+
+- 200: 삭제 성공
+- 401: 사용자가 존재하지 않음
+
+#### 응답 모델
+
+-
+
+### POST /send/info
+
+**보고서 생성 및 저장 후 안드로이드에게 파일 전송**
+
+안드로이드에서의 입력값을 json파일로 변환 후 파이썬파일에 있는 함수 리턴값을 다시 가져와서 그 내용을 보고서파일로 작성 후 안드로이드에 전송
 
 파일명은 만들어지는 당시의 날짜+시간으로 생성.    
- 유저의 이메일과 파일명으로 user.db report table에 저장     
+유저의 이메일과 파일명으로 `user.db`의 `report` table에 저장     
 
+#### 요청 모델
 
+-
 
-### DELETE
+#### 응답 코드
 
-- /delete :  회원삭제 
+-
 
-지우고자 하는 이메일 없으면->401     
-삭제하고 db 회원 시퀀스 초기화 후-> 200    
-세션이 만들어지면 입력값을 이메일로 받지 않고 세션을 넘겨줄 예정
+#### 응답 모델
+
+-
