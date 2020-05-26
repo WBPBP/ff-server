@@ -62,7 +62,7 @@ salt 값(입력받지는 않음) : salt
 
 
 
-## DELETE
+### DELETE
 
 - /delete :  회원삭제 
 
