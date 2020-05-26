@@ -26,10 +26,10 @@ router.post('/', function (req, res, next) {
 	db.all('SELECT * from user WHERE user_email = ?',user, function(err,db_data){
 		db_result=db_data;
 		if(err){
-			res.send(500);
+			res.sendStatus(500);
 		}
 		else if(db_result==0){
-			res.send(401);
+			res.sendStatus(401);
 			console.log("your email is wrong")
 			
 		}
@@ -84,11 +84,11 @@ router.post('/', function (req, res, next) {
 router.get('/logout',function(req,res,next){
 	req.session.destroy(function(err){
 		if(err){
-			res.send(500);
+			res.sendStatus(500);
 		}
 		else{
 			res.clearCookie('sid');
-			res.send(200);
+			res.sendStatus(200);
 			req.redirect('/login');
 		}
 	}); //콜백함수는 세션이 다 종료된 다음 호출이 된다. 

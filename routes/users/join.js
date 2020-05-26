@@ -30,7 +30,7 @@ router.post('/addUser',function(req,res,next){
 	const user_height = req.body.user_height;
 	crypto.randomBytes(32,(err,buffer)=>{
 		if(err){
-			res.send(500);
+			res.sendStatus(500);
 		}
 		else{
 			let salt = buffer.toString('base64');
@@ -43,22 +43,23 @@ router.post('/addUser',function(req,res,next){
 					db_result=db_data;						
 					if(validator.isEmail(user)){
 						if(db_result==0){
-							key=1;}
+							key=1;
+						}
 						else{
 										  
 							console.log('sorry, that ID is already existed');
-							res.send(401); //bad request
+							res.sendStatus(401); //bad request
 							}
 					}
 					else{
 						console.log('wrong form of email');
-						res.send(400);	//bad request	 
+						res.sendStatus(400);	//bad request	 
 					}
 									  
 					if( key == 1){ //중복이 아니므로
 						db.run(query,user_email,saltPWD,user_gender,user_age,user_weight,user_height,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
 							console.log('insert user table :',user_email);
-							res.send(201); //OK
+							res.sendStatus(201); //OK
 						});
 					}
 					else { //아님 페일 
