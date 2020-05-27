@@ -18,13 +18,13 @@ router.get('/', function (req, res, next) {
 
 //로그인 하는 라우터 
 router.post('/', function (req, res, next) {
-	//아이디 있는지 체크 
-	
+	//아이디 있는지 체크
 	var user = req.body.user_email;
 	var pwd = req.body.user_pwd;
 	//메일이 없을때 타입오류 나느데 어떻게 처리할까나 ㅠㅠㅠㅠ 
 	db.all('SELECT * from user WHERE user_email = ?',user, function(err,db_data){
 		db_result=db_data;
+		//에러 처리
 		if(err){
 			res.sendStatus(500);
 		}
@@ -33,50 +33,34 @@ router.post('/', function (req, res, next) {
 			console.log("your email is wrong")
 			
 		}
-		else{
-		let user_email = db_result[0].user_email;
-		console.log(user_email);
+		else {
+			let email_ID = db_result[0].user_email; //가입되어있는 아이디
+			let user_PWD = db_result[0].user_pwd; //가입되어있는 비밀번호
+			if (email_ID === user) {
+				crypto.randomBytes(32, (err, buffer) => {
+					if (err) {
+						res.sendStatus(500);
+					}
+					else {
+						crypto.pbkdf2(pwd, salt, 100000, 64, 'sha512', function (err, hashed) {
+							let saltPWD = hashed.toString('base64');
+							if (saltPWD === user_PWD) {
+								req.session.userEmail = user;
+								console.log('login success');
+								res.sendStatus(200);
+							} else {
+								console.log('login failure');
+								res.sendStatus(400);
+							}
+						});
+					}
+				});
+			}
+			else{
+				console.log('this email is not existed');
+				res.sendStatus(401);
+			}
 		}
-	});
-	
-	
-	crypto.randomBytes(32,(err,buffer)=>{
-		if(err){
-			res.send(500);
-		}
-		else{
-			db.all('SELECT * FROM user WHERE user_email = ?',user,function(err,db_data){ //아이디에 해당하는 정보 불러오기
-				
-				 //db에 저장된 salt,hash비밀번호 가져옴 
-				  db_result = db_data;
-				  let salt = db_result[0].salt; //
-				  let user_pwd = db_result[0].user_pwd;
-				  console.log(salt);
-				 
-				 
-				  crypto.pbkdf2(pwd,salt,100000,64,'sha512', function(err,hashed){
-					  let saltPWD =hashed.toString('base64');
-					  if (saltPWD==user_pwd) {
-						//req.session.is_logined = true;
-						//req.session.save(function(req,res,next){
-						 // console.log('save');
-						//});  
-						req.session.userEmail = user;
-						console.log('login success');
-						res.send(200);
-					  } 
-					  else{
-						console.log('login failure'); 
-						res.send(400);
-					  }
-				  });
-				
-				  
-			  
-			});
-			
-		}
-    
 	});
 });
 

@@ -85,7 +85,7 @@ const user = req.body.user_email;
 						}
 						
 						else{
-							user_id= db_data[0]["user_id"];
+							user_id= db_data[0].user_id;
 							console.log(user_id);
 							const query =`insert into report (user_id,file_name)values('${user_id}','${date}')`;
 							db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
@@ -103,17 +103,6 @@ const user = req.body.user_email;
 	});	
 	
 });
-
-
-	
-	
-	
-
-
-
-
-
-
 
  module.exports = router;
 

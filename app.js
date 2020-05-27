@@ -26,18 +26,8 @@ var showshow = require('./routes/practice/show');
 app.use('/show',showshow);
 
 
-// app.configure(function(){
-// app.use(express.bodyParser());	
-// app.use(express.cookieParser());  
-// app.use(session({
-  // store: new SQLiteStore,
-  // secret: 'iwanttosleep',
-  // cookie : {maxAge : 7*24*60*60*1000} // 1 week
-  // //resave: false,
-  // //saveUninitialized: true
-// }));
 
-// });
+
 
 
  app.listen(3000, function(){
