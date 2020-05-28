@@ -33,27 +33,26 @@ var json = JSON.stringify(testData);
 
 router.post('/info',function(req,res,next){
 //옵션을 준다
-var date = new Date();
+	var date = new Date();
+	function getFormatDate(date){
+		var year = date.getFullYear();              //yyyy
+		var month = (1 + date.getMonth());          //M
+		month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+		var day = date.getDate();                   //d
+		day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+		var hour =date.getHours();
+		hour = hour >=10 ? hour : '0'+ hour;
+		//hour 두자리로 저장	
+		var minute =date.getMinutes();
+		minute= minute >=10 ? minute : '0'+ minute;
+		//minute 두자리로 저장
+		var second =date.getSeconds();
+		second = second >=10 ? second : '0'+ second;
+		//second 두자리로 저장
+		return  year + '' + month + '' + day+'_'+hour+''+minute+''+second;
+	}
 
-function getFormatDate(date){
-    var year = date.getFullYear();              //yyyy
-    var month = (1 + date.getMonth());          //M
-    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
-    var day = date.getDate();                   //d
-    day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
-	var hour =date.getHours();
-	hour = hour >=10 ? hour : '0'+ hour;
-	//hour 두자리로 저장	
-	var minute =date.getMinutes();
-	minute= minute >=10 ? minute : '0'+ minute;
-	//minute 두자리로 저장
-	var second =date.getSeconds();
-	second = second >=10 ? second : '0'+ second;
-	//second 두자리로 저장
-    return  year + '' + month + '' + day+'_'+hour+''+minute+''+second;
-}
-
-const user = req.body.user_email;
+	const user = req.body.user_email;
 	var options = {
 		mode : 'text',
 		encoding:'utf-8',
@@ -69,40 +68,29 @@ const user = req.body.user_email;
 			res.sendStatus(500);
 		}
 		else{	
-			console.log('잘 넘어갔다왔음');
-			console.log(results);
-		
-			//항상 저 폴더에 파일들이 저장되어있으며 db에 유저의 이메일과 파일명이 저장되어있다(나중에 들고올 수 있도록)
-			fs.writeFile('./routes/reports/reportsResource/'+date+'.json',results,function(err){
+			console.log('잘 넘어갔다왔음');		
+			db.all('SELECT user_id from user WHERE user_email = ?',user, function(err,db_data){
 				if(err){
-					console.log(err);
+					res.sendStatus(500);
 				}
 				else{
-					db.all('SELECT user_id from user WHERE user_email = ?',user, function(err,db_data){
-						
-						if(err){
-							res.sendStatus(500);
-						}
-						
-						else{
-							user_id= db_data[0].user_id;
-							console.log(user_id);
-							const query =`insert into report (user_id,file_name)values('${user_id}','${date}')`;
-							db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
-								res.sendStatus(200);
-								console.log('insert user information :',user);
-								//res.json(date.json)
-								console.log('보고서 완료');
-							}); //잘 넘어가는지 모르겠음.. 
+					user_id= db_data[0].user_id;
+					console.log(user_id);
+					const query =`insert into report (user_id,contents)values('${user_id}','${results}')`;
+					db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
+						//res.sendStatus(200);
+						console.log('insert user information :',user);
+						res.json(results);
+						console.log('보고서 완료');
+					}); //잘 넘어가는지 모르겠음.. 
 							
 						}
 					});
-				}
-			});
+			
 		}
-	});	
+	});
+});	
 	
-});
 
  module.exports = router;
 
