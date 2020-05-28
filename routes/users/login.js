@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sqlite3 = require('sqlite3').verbose();
 const crypto = require('crypto');
+sess = require('/home/ec2-user/myapp/express-session');
 
 const db = new sqlite3.Database('/home/ec2-user/myapp/data/user.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
@@ -18,7 +19,7 @@ router.get('/', function (req, res, next) {
 
 //로그인 하는 라우터 
 router.post('/', function (req, res, next) {
-	//아이디 있는지 체크
+	//사용자가 입력한 아이디 비밀번호 
 	var user = req.body.user_email;
 	var pwd = req.body.user_pwd;
 	//메일이 없을때 타입오류 나느데 어떻게 처리할까나 ㅠㅠㅠㅠ 
@@ -34,15 +35,13 @@ router.post('/', function (req, res, next) {
 			
 		}
 		else {
-			let email_ID = db_result[0].user_email; //가입되어있는 아이디
-			let user_PWD = db_result[0].user_pwd; //가입되어있는 비밀번호
+			//db 에 저장되어있는 id, pwd,salt 불러온다.
+			let email_ID = db_result[0]["user_email"]; 
+			let user_PWD = db_result[0]["user_pwd"]; 
+			let user_salt = db_result[0]["salt"];
+			
 			if (email_ID === user) {
-				crypto.randomBytes(32, (err, buffer) => {
-					if (err) {
-						res.sendStatus(500);
-					}
-					else {
-						crypto.pbkdf2(pwd, salt, 100000, 64, 'sha512', function (err, hashed) {
+						crypto.pbkdf2(pwd,user_salt, 100000, 64, 'sha512', function (err, hashed) {
 							let saltPWD = hashed.toString('base64');
 							if (saltPWD === user_PWD) {
 								req.session.userEmail = user;
@@ -53,8 +52,6 @@ router.post('/', function (req, res, next) {
 								res.sendStatus(400);
 							}
 						});
-					}
-				});
 			}
 			else{
 				console.log('this email is not existed');
@@ -71,9 +68,8 @@ router.get('/logout',function(req,res,next){
 			res.sendStatus(500);
 		}
 		else{
-			res.clearCookie('sid');
 			res.sendStatus(200);
-			req.redirect('/login');
+			console.log("logout");
 		}
 	}); //콜백함수는 세션이 다 종료된 다음 호출이 된다. 
 });

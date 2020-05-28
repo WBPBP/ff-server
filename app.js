@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express(); //express 만든 사람이 이렇게 사용해라 약속
 var bodyParser = require('body-parser');
-//var session = require('express-session')
-//var SQLiteStore = require('connect-sqlite3')(session)
+var session = require('express-session')
+var SQLiteStore = require('connect-sqlite3')(session)
 app.locals.pretty= true;
 app.use(express.static('public'));//관습적으로 public
 app.use(bodyParser.json())
@@ -19,7 +19,7 @@ app.use('/login',loginRouter);
 var sendingRouter = require('./routes/reports/send');
 app.use('/send',sendingRouter);
 
-var deleteRouter = require('./routes/practice/delete');
+var deleteRouter = require('./routes/users/delete');
 app.use('/delete',deleteRouter);
 
 var showshow = require('./routes/practice/show');
