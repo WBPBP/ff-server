@@ -14,7 +14,7 @@ def run(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias,
 
 
 # 실제 사용시에 입력받을 부분입니다.
-
+# 입력값 6개 들어옴 
 json_data=sys.argv[1]
 data=json.loads(json_data)
 verticalWeightBias_Left = data['verticalWeightBias_Left']

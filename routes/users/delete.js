@@ -6,7 +6,6 @@ const db = new sqlite3.Database('/home/ec2-user/myapp/data/user.db', sqlite3.OPE
     if (err) {
         console.log(err);
     } else {
-        console.log('connected database in delete.js');
     }
 });
 
@@ -16,8 +15,8 @@ router.get('/', function (req, res, next) {
 
 router.delete('/', function (req, res, next) {
 	db.get("PRAGMA foreign_keys = ON");
-	var user = req.body.user_email;
-	db.run('DELETE FROM user WHERE user_email = ? ',user,function(err){
+	if(req.session.displayName){
+	db.run('DELETE FROM user WHERE user_email = ? ',req.session.displayName,function(err){
 		if(err){
 			res.sendStatus(500);
 		}
@@ -25,6 +24,11 @@ router.delete('/', function (req, res, next) {
 			res.sendStatus(200);
 		}			
 	});
+	}
+	else{
+		console.log('session is expired');
+		res.sendStatus(401);
+	}
 });
 			
 module.exports = router;

@@ -6,7 +6,8 @@ var sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('/home/ec2-user/myapp/data/user.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err);
-    } else {
+    } 
+	else {
     }
 });
 
@@ -17,8 +18,12 @@ router.get('/', function (req, res, next) {
 
 //투입할 데이터 안드로이드에서 오면 나 이거 삭제해도됨
 const testData = {
-	key1: 3,
-	key2: 4,
+	verticalWeightBias_Left : 1,
+	verticalWeightBias_Right : 2,
+	horizontalWeightBias : 3,
+	heelPressureDifference : 4,
+	leftPressure : 5,
+	rightPressure : 6
 };
 
 //문자열로 바꾼다~
@@ -52,7 +57,6 @@ router.post('/info',function(req,res,next){
 		return  year + '' + month + '' + day+'_'+hour+''+minute+''+second;
 	}
 
-	const user = req.body.user_email;
 	var options = {
 		mode : 'text',
 		encoding:'utf-8',
@@ -62,31 +66,34 @@ router.post('/info',function(req,res,next){
 		args:[json]
 	};
 	date = getFormatDate(date);
-	PythonShell.run('/home/ec2-user/myapp/model/dataProcessing.py',options,function(err,results){
+	PythonShell.run('/home/ec2-user/myapp/model/Execute.py',options,function(err,results){
 		if(err){
 			console.log('fail');
 			res.sendStatus(500);
 		}
-		else{	
+		else if(req.session.displayName){
+			console.log(req.session.displayName);			
 			console.log('잘 넘어갔다왔음');		
-			db.all('SELECT user_id from user WHERE user_email = ?',user, function(err,db_data){
+			db.all('SELECT user_id from user WHERE user_email = ?',req.session.displayName, function(err,db_data){
 				if(err){
 					res.sendStatus(500);
 				}
 				else{
 					user_id= db_data[0].user_id;
-					console.log(user_id);
 					const query =`insert into report (user_id,contents)values('${user_id}','${results}')`;
 					db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
 						//res.sendStatus(200);
-						console.log('insert user information :',user);
 						res.json(results);
 						console.log('보고서 완료');
-					}); //잘 넘어가는지 모르겠음.. 
+					}); 
 							
 						}
 					});
 			
+		}
+		else{
+			console.log('session expired');
+			res.sendStatus(401);
 		}
 	});
 });	
