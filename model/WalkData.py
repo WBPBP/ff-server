@@ -1,8 +1,8 @@
 import random
 import numpy as np
 
-# 각 데이터들을 저장해놓은 파일입니다. 현재는 데이터가 없어서 생성자에 랜덤으로 설정해 놓은 것입니다.
 
+# 각 데이터들을 저장해놓은 파일입니다. 현재는 데이터가 없어서 생성자에 랜덤으로 설정해 놓은 것입니다.
 class normalGait:
     __left=[];
     __right=[];
@@ -42,6 +42,7 @@ class in_toedGait:
         return np.array(self.__left).reshape(12, -1)
     def getRight(self):
         return np.array(self.__right).reshape(12, -1)
+
 class craneGait:
     __left=[];
     __right=[];

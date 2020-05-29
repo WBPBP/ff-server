@@ -10,7 +10,6 @@ def run(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias,
     score, gaitComment, diseaseNum = walkCheck(leftPressure, rightPressure)
     dict = {"staticPressureRes": staticPressureRes, "percent": score, "gaitComment": gaitComment, "diseaseNum": diseaseNum}
     print(json.dumps(dict, ensure_ascii=False))
-    #return json.dumps(dict)
     #json으로 형식 변환
 
 

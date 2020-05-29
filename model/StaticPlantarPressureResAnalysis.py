@@ -7,7 +7,7 @@ def analysisStaticPressureResult(verticalWeightBias_Left, verticalWeightBias_Rig
     comment += scoliosisDiagnosis(heelPressureDifference)
     return comment
 
-# 왼발의 앞/뒤꿈치 중 어느 쪽으로 중심이 더 쏠렸는지 판단
+# 왼발의 앞/뒤꿈치의 균형 판단
 def verticalBalanceCheck_Left(verticalWeightBias_Left):
     comment = "양 발 중 왼발은 "
     if verticalWeightBias_Left < 0.48:
@@ -21,7 +21,7 @@ def verticalBalanceCheck_Left(verticalWeightBias_Left):
         leftState = 2
     return comment, leftState
 
-# 오른발의 앞/뒤꿈치 중 어느 쪽으로 중심이 더 쏠렸는지 판단
+# 오른발의 앞/뒤꿈치의 균형 판단
 def verticalBalanceCheck_Right(verticalWeightBias_Right, leftState):
     if verticalWeightBias_Right < 0.48:
         comment = " 오른발 또한 " if(leftState==0) else " 하지만 오른발은"

@@ -19,7 +19,7 @@ def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질
     in_mean = []
     crane_mean = []
     ele_mean = []
-    # 상관분석 값들을 저장 list를 선언했습니다.
+    # 상관분석 값들을 저장 list를 선언
 
     normal=normalGait()
     out_toe=out_toedGait()
