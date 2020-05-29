@@ -34,6 +34,7 @@
  정적 족저압 검사 결과를 제공해주는 파일입니다.
   
   - `analysisStaticPressureResult(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias, heelPressureDifference)` : 정적 족저압검사에 대한 comment를 반환
+    
     @ param
      - `verticalWeightBias_Left` : 왼발의 앞/뒤꿈치 균형 편향 정도
      - `verticalWeightBias_Right` : 오른발의 앞/뒤꿈치 균형 편향 정도
@@ -49,6 +50,7 @@
  걷기를 통해 얻은 걸음걸이 특징값을 입력받아 걸음걸이 패턴 분석 및 예축된 의심 질병에 대한 결과 제공입니다.
   
   - `walkCheck(leftPressure, rightPressure)` : 걷기 검사에 대한 결과를 반환 
+    
     @ param 
      - `leftPressure` : 걸어서 얻은 왼발의 특징값
      - `rightPressure` : 걸어서 얻은 어른발의 특징값
@@ -64,9 +66,10 @@
  안드로이드로부터 입력받은 특징값을 분석해 결과를 json형식으로 반환해주는 파일입니다.
   
   - `run(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias, heelPressureDifference, leftPressure, rightPressure)` : 결과 분석 실행 함수
-   @ return
-     - dict
-       - `staticPressureRes` : 정적 족저압 검사 결과
-       - `percent` : 올바른 걸음걸이 척도
-       - `gaitComment` : 걸음걸이 패턴 분석 결과
-       - `diseaseNum` : 질병 번호
+   
+    @ return
+      - dict
+        - `staticPressureRes` : 정적 족저압 검사 결과
+        - `percent` : 올바른 걸음걸이 척도
+        - `gaitComment` : 걸음걸이 패턴 분석 결과
+        - `diseaseNum` : 질병 번호
