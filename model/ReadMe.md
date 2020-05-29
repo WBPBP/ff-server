@@ -8,23 +8,23 @@
 
  총 5가지 걸음걸이 특징값들과 걸음걸이 패턴에 맞는 comment를 저장해놓은 파일입니다.
  
-  `normalGait` : 올바른 걸음걸이 특징값을 저장해놓은 클래스
+  - `normalGait` : 올바른 걸음걸이 특징값을 저장해놓은 클래스
     - `getLeft` : 왼발의 특징값을 반환
     - `getRight` : 오른발의 특징값을 반환
     
-  `out_toedGait` : 팔자 걸음걸이 특징값을 저장해놓은 클래스
+  - `out_toedGait` : 팔자 걸음걸이 특징값을 저장해놓은 클래스
     - `getLeft` : 왼발의 특징값을 반환
     - `getRight` : 오른발의 특징값을 반환
     
-  `in_toedGait` : 안짱 걸음걸이 특징값을 저장해놓은 클래스
+  - `in_toedGait` : 안짱 걸음걸이 특징값을 저장해놓은 클래스
     - `getLeft` : 왼발의 특징값을 반환
     - `getRight` : 오른발의 반환특징값을 반환
     
-  `craneGait` : 학다리 걸음걸이 특징값을 저장해놓은 클래스
+  - `craneGait` : 학다리 걸음걸이 특징값을 저장해놓은 클래스
     - `getLeft` : 왼발의 특징값을 반환
     - `getRight` : 오른발의 특징값을 반환
     
-  `elevenGait` :11자 걸음걸이 특징값을 저장해놓은 클래스
+  - `elevenGait` :11자 걸음걸이 특징값을 저장해놓은 클래스
     - `getLeft` : 왼발의 특징값을 반환
     - `getRight` : 오른발의 특징값을 반환
     
