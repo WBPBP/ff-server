@@ -4,7 +4,7 @@
   
 ## API
 
-### walkData
+### WalkData
 
  총 5가지 걸음걸이 특징값들과 걸음걸이 패턴에 맞는 comment를 저장해놓은 파일입니다.
  
@@ -29,7 +29,7 @@
     - `getRight` : 오른발의 특징값을 반환
   
   
-### staticPlantarPressureResAnalysis
+### StaticPlantarPressureResAnalysis
 
  정적 족저압 검사 결과를 제공해주는 파일입니다.
   
@@ -61,7 +61,7 @@
      - `disease` : 질병 아이콘 삽입을 위한 질병 번호
 
 
-### execute
+### Execute
 
  안드로이드로부터 입력받은 특징값을 분석해 결과를 json형식으로 반환해주는 파일입니다.
   
