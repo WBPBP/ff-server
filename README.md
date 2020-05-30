@@ -62,7 +62,7 @@ app
 없음
 
 
-### POST /login
+### POST /log/in
 
 #### 요청 모델
 
@@ -84,7 +84,7 @@ app
 없음
 
 
-### GET /logout
+### GET /log/out
 
 **로그아웃**
 
