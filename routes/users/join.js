@@ -21,7 +21,8 @@ router.post('/addUser',function(req,res,next){
 
    var key = 0; //중복여부 키 
    //회원가입에 들어갈 정보들 
-   const id = req.body.user_email;
+   const id = (req.body.user_email).toLowerCase();
+   console.log(id);
 	const pwd = req.body.user_pwd;
 	crypto.randomBytes(32,function(err,buffer){
 		if(err){
