@@ -131,28 +131,28 @@ app
 유저의 id와 파일내용으로 `user.db`의 `report` table에 저장     
 
 #### 요청 모델
-json 
-{
-  "verticalWeightBias_Left" : "double",
-  "verticalWeightBias_Right" : "double",
-  "horizontalWeightBias" : "double",
-  "heelPressureDifference" : "int",
-  "leftPressure" : "int[]",
-  "rightPressure" : "int[]"
-}
--
+ - json     
+ {    
+    "verticalWeightBias_Left" : "double",    
+    "verticalWeightBias_Right" : "double",   
+    "horizontalWeightBias" : "double",    
+    "heelPressureDifference" : "int",    
+    "leftPressure" : "int[]",    
+    "rightPressure" : "int[]"    
+ }    
+
 
 #### 응답 코드
 
 -
 
 #### 응답 모델
-json
-{
-   "staticPressureRes" : "string",
-   "percent" : "int", 
-   "gaitComment" : "string", 
-   "diseaseNum" : "int" 
-}
+json    
+{    
+   "staticPressureRes" : "string",    
+   "percent" : "int",     
+   "gaitComment" : "string",     
+   "diseaseNum" : "int"     
+}    
 
 -
