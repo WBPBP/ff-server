@@ -26,10 +26,12 @@
         - `diseaseNum` : 질병 번호
           | 식별자 | 국문 | 영문 |
           | ------ | -----| ----|
-          | 1 | 허리디스크   | Herniated disc |
-          | 2 | 고관절염     | Osteoarthritis | 
-          | 3 | 연골연화증   | Chondromalacia |
-          | 4 | 관절염       | arthritis |
+          | 1 | 허리디스크    | Spinal disc herniation |
+          | 1 | 퇴행성 관절염 | Osteoarthritis |
+          | 2 | 고관절염      | arthritis of the hip joint | 
+          | 2 | 측부인대손상  | Collateral ligament rupture |
+          | 3 | 연골연화증    | Chondromalacia |
+          | 4 | 관절염        | arthritis |
   
   
 ### StaticPlantarPressureResAnalysis
