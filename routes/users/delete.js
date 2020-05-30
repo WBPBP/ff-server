@@ -27,7 +27,7 @@ router.delete('/', function (req, res, next) {
 	}
 	else{
 		console.log('session is expired');
-		res.sendStatus(401);
+		res.sendStatus(401); //인증이 필요.. 
 	}
 });
 			

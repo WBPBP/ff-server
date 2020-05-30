@@ -6,11 +6,9 @@ var FileStore = require('session-file-store')(session);
 app.use(express.static('public'));//관습적으로 public
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
-var PythonShell = require('python-shell');
 
   app.use(session({
     secret: 'iwanttosleep', //이 값을 이용해서 세션 id 와 ...
-    //cookie: {maxAge: 7 * 24 * 60 * 60 * 1000}, // 1 week
 	resave : false,
 	saveUninitialized : true,
 	store: new FileStore()
@@ -28,12 +26,6 @@ app.use('/send',sendingRouter);
 
 var deleteRouter = require('./routes/users/delete');
 app.use('/delete',deleteRouter);
-
-// var showshow = require('./routes/practice/show');
-// app.use('/show',showshow);
-
-
-
 
 
 

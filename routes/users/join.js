@@ -18,16 +18,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/addUser',function(req,res,next){
-	
-   var user = req.body.user_email;
+
    var key = 0; //중복여부 키 
    //회원가입에 들어갈 정보들 
-   const user_email = req.body.user_email;
-	const user_pwd = req.body.user_pwd;
-	const user_gender = req.body.user_gender;
-	const user_age = req.body.user_age;
-	const user_weight = req.body.user_weight;
-	const user_height = req.body.user_height;
+   const id = req.body.user_email;
+	const pwd = req.body.user_pwd;
 	crypto.randomBytes(32,function(err,buffer){
 		if(err){
 			res.sendStatus(500);
@@ -36,30 +31,30 @@ router.post('/addUser',function(req,res,next){
 			let salt = buffer.toString('base64');
 			crypto.pbkdf2(req.body.user_pwd,salt,100000,64,'sha512',function(err,hashed){
 				let saltPWD=hashed.toString('base64');
-				const query = `insert into user(user_email, user_pwd,salt, user_gender,user_age,user_weight,user_height) values (?,?,?,?,?,?,?)`;				
+				const query = `insert into user(user_email, user_pwd,salt) values (?,?,?)`;				
 				//정보기입후 아이디 중복 검사
-				db.all('SELECT * FROM user WHERE user_email = ?',user,function(err,db_data){ //그 아이디가 있는지 확인 
+				db.all('SELECT * FROM user WHERE user_email = ?',id,function(err,db_data){ //그 아이디가 있는지 확인 
 					
 					db_result=db_data;						
-					if(validator.isEmail(user)){
+					if(validator.isEmail(id)){
 						if(db_result==0){
 							key=1;
 						}
 						else{
 										  
 							console.log('sorry, that ID is already existed');
-							res.sendStatus(401); //bad request
+							res.sendStatus(400); // 잘못된 요청 
 							}
 					}
 					else{
 						console.log('wrong form of email');
-						res.sendStatus(400);	//bad request	 
+						res.sendStatus(400);	//서버가 요청 구문 인식 못함 	 
 					}
 									  
-					if( key == 1){ //중복이 아니므로
-						db.run(query,user_email,saltPWD,salt,user_gender,user_age,user_weight,user_height,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
-							console.log('insert user table :',user_email);
-							res.sendStatus(201); //OK
+					if( key === 1){ //중복이 아니므로
+						db.run(query,id,saltPWD,salt,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
+							console.log('insert user table :',id);
+							res.sendStatus(201); //created
 						});
 					}
 					else { //아님 페일 

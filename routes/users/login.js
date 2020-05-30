@@ -26,11 +26,6 @@ router.post('/in', function (req, res, next) {
 	//메일이 없을때 타입오류 나느데 어떻게 처리할까나 ㅠㅠㅠㅠ 
 	db.all('SELECT * from user WHERE user_email = ?',id, function(err,db_data){
 		db_result=db_data;
-		var user = {
-			 email_ID : db_result[0]["user_email"], 
-			 user_PWD : db_result[0]["user_pwd"],
-			 displayName : 'wbpbp'			 
-			}
 		//에러 처리
 		if(err){
 			res.sendStatus(500);
@@ -42,6 +37,11 @@ router.post('/in', function (req, res, next) {
 		}
 		else {
 			//db 에 저장되어있는 id, pwd,salt 불러온다.
+				var user = {
+			 email_ID : db_result[0]["user_email"], 
+			 user_PWD : db_result[0]["user_pwd"],
+			 displayName : 'wbpbp'			 
+			}
 			
 			let user_salt = db_result[0]["salt"];
 			if (user.email_ID === id) {
@@ -72,7 +72,7 @@ router.get('/out',function(req,res,next){
 	
 	res.sendStatus(200);
 	console.log('logout');
-	}); //콜백함수는 세션이 다 종료된 다음 호출이 된다. 
+	}); 
 
    module.exports = router;
 
