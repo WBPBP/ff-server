@@ -24,14 +24,12 @@
         - `percent` : 올바른 걸음걸이 척도
         - `gaitComment` : 걸음걸이 패턴 분석 결과
         - `diseaseNum` : 질병 번호
-          | 식별자 | 국문 | 영문 |
-          | ------ | -----| ----|
-          | 1 | 허리디스크    | Spinal disc herniation |
-          | 1 | 퇴행성 관절염 | Osteoarthritis |
-          | 2 | 고관절염      | arthritis of the hip joint | 
-          | 2 | 측부인대손상  | Collateral ligament rupture |
-          | 3 | 연골연화증    | Chondromalacia |
-          | 4 | 관절염        | arthritis |
+          | 식별자 | 국문 | 영문 | 아이콘 index |
+          | ------ | -----| ----| --------|
+          | 1 | 허리디스크    | Spinal disc herniation | FRACTURE[2, 1] |
+          | 2 | 고관절염      | arthritis of the hip joint | FRACTURE[3, 2] |
+          | 3 | 연골연화증    | Chondromalacia | FRACTURE[1, 4] |
+          | 4 | 관절염        | arthritis | DIABETES[1, 0] |
   
   
 ### StaticPlantarPressureResAnalysis
