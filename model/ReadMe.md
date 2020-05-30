@@ -24,6 +24,12 @@
         - `percent` : 올바른 걸음걸이 척도
         - `gaitComment` : 걸음걸이 패턴 분석 결과
         - `diseaseNum` : 질병 번호
+          | 식별자 | 국문 | 영문 |
+          | ------ | -----| ----|
+          | 1 | 허리디스크   | Herniated disc |
+          | 2 | 고관절염     | Osteoarthritis | 
+          | 3 | 연골연화증   | Chondromalacia |
+          | 4 | 관절염       | arthritis |
   
   
 ### StaticPlantarPressureResAnalysis
