@@ -6,13 +6,13 @@
 
 ~~~
 app
-  └ data                        →
-  └ routes                      →
-  └ app.js                      →
-  └ model                       →
+  └ data                        → 데이터베이스가 들어있다.
+  └ routes                      → 라우터들이 담겨있는 디렉토리
+  └ app.js                      → 서버가 구동되는 js파일 
+  └ model                       → 보고서작성을 위해 데이터 분석해주는 파이썬 코드 파일
   └ package.json                →
-  └ README.md                   →
-  └ sessions                    →
+  └ README.md                   → 
+  └ sessions                    →계정에 세션이 생기면 여기에 생성 
 ~~~
 
 ## 데이터베이스
