@@ -136,7 +136,7 @@ app
     "verticalWeightBias_Left" : "double",    
     "verticalWeightBias_Right" : "double",   
     "horizontalWeightBias" : "double",    
-    "heelPressureDifference" : "int",    
+    "heelPressureDifference" : "double",    
     "leftPressure" : "int[]",    
     "rightPressure" : "int[]"    
  }    
