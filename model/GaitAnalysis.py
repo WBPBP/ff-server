@@ -8,9 +8,9 @@ def avgList(list): # 형식이 list인 경우 전체 원소에 대한 평균을 
     return sum(list, 0.0)/len(list)
 
 def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
-    if len(leftPressure)!=120 || len(rightPressure) != 120:
+    if len(leftPressure)!=120 or len(rightPressure) != 120:
         return 0, "결과가 바르지 못해 분석에 실패하였습니다.", 0
-    elif math.isnan(leftPressure) || math.isnan(rightPressure):
+    elif math.isnan(leftPressure[0]) or math.isnan(rightPressure[0]):
         return 0, "조금만 더천천히 걸어주세요!", 0
     left = copy.deepcopy(leftPressure)
     right = copy.deepcopy(rightPressure)

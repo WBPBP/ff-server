@@ -8,7 +8,7 @@ def isNumber(s) :
 
 # 정적족저압의 결과를 분석하여 comment를 반환해주는 함수입니다.
 def analysisStaticPressureResult(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias, heelPressureDifference):
-    if !isNumber(verticalBalanceCheck_Left)||!isNumber(verticalWeightBias_Right)||!isNumber(horizontalWeightBias)|| !isNumber(heelPressureDifference): 
+    if not isNumber(verticalWeightBias_Left) or not isNumber(verticalWeightBias_Right) or not isNumber(horizontalWeightBias) or not isNumber(heelPressureDifference):
         return "검사 결과 분석이 불가능합니다."
     comment, leftState = verticalBalanceCheck_Left(verticalWeightBias_Left)
     comment += verticalBalanceCheck_Right(verticalWeightBias_Right, leftState)

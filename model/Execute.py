@@ -30,8 +30,9 @@ verticalWeightBias_Left = random.random()
 verticalWeightBias_Right = random.random()
 horizontalWeightBias = random.random()
 heelPressureDifference = random.randint(0, 60)
-leftPressure = []
-rightPressure = []
+leftPressure = [1,2,3]
+rightPressure = [1,2,3]
+
 for i in range(120):
 	leftPressure.append(random.randint(0, 16))
 	rightPressure.append(random.randint(0, 16))
