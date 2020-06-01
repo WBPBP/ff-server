@@ -1,12 +1,17 @@
 import numpy as np
 import pandas as pd;
 import copy
+import math
 from WalkData import normalGait, out_toedGait, in_toedGait, craneGait, elevenGait, diseasePrediction
 
 def avgList(list): # 형식이 list인 경우 전체 원소에 대한 평균을 구하는 함수
     return sum(list, 0.0)/len(list)
 
 def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
+    if len(leftPressure)!=120 || len(rightPressure) != 120:
+        return 0, "결과가 바르지 못해 분석에 실패하였습니다.", 0
+    elif math.isnan(leftPressure) || math.isnan(rightPressure):
+        return 0, "조금만 더천천히 걸어주세요!", 0
     left = copy.deepcopy(leftPressure)
     right = copy.deepcopy(rightPressure)
     # 형태를 변화시켜주기 위해 복사해서 사용

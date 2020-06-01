@@ -24,7 +24,7 @@ heelPressureDifference = data['heelPressureDifference']
 leftPressure = data['leftPressure']
 rightPressure = data['rightPressure']
 
-
+'''
 # 더미 데이터 생성
 verticalWeightBias_Left = random.random()
 verticalWeightBias_Right = random.random()
@@ -33,8 +33,10 @@ heelPressureDifference = random.randint(0, 60)
 leftPressure = []
 rightPressure = []
 for i in range(120):
-    leftPressure.append(random.randint(0, 16))
-    rightPressure.append(random.randint(0, 16))
+	leftPressure.append(random.randint(0, 16))
+	rightPressure.append(random.randint(0, 16))
+'''
+
 
 #실행 함수 호출
 run(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias, heelPressureDifference, leftPressure, rightPressure)

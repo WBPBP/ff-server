@@ -64,6 +64,7 @@ router.post('/info',function(req,res,next){
 		PythonShell.run('/home/ec2-user/myapp/model/Execute.py',options,function(err,results){
 			if(err){
 				console.log('fail');
+				console.log(err);
 				res.sendStatus(500);
 			}
 			else if(req.session.displayName){
@@ -72,6 +73,7 @@ router.post('/info',function(req,res,next){
 				db.all('SELECT user_id from user WHERE user_email = ?',req.session.displayName, function(err,db_data){
 					if(err){
 						res.sendStatus(500);
+						console.log('here is problem');
 					}
 					else{
 						user_id= db_data[0].user_id;

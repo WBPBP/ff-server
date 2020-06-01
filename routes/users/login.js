@@ -29,6 +29,7 @@ router.post('/in', function (req, res, next) {
 		//에러 처리
 		if(err){
 			res.sendStatus(500);
+			console.log("that's not my fault lol")
 		}
 		else if(db_result==0){
 			res.sendStatus(401);
@@ -49,7 +50,7 @@ router.post('/in', function (req, res, next) {
 					let saltPWD = hashed.toString('base64');
 					if (saltPWD === user.user_PWD) {
 						req.session.displayName = user.email_ID;
-						console.log('login success');
+						console.log(id,' is logined');
 						res.sendStatus(200);
 					} 
 					else {
