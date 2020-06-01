@@ -8,10 +8,11 @@ def avgList(list): # 형식이 list인 경우 전체 원소에 대한 평균을 
     return sum(list, 0.0)/len(list)
 
 def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
+    if math.isnan(leftPressure[0]) or math.isnan(rightPressure[0]):
+        return 0, "조금만 더천천히 걸어주세요!", 0
     if len(leftPressure)!=120 or len(rightPressure) != 120:
         return 0, "결과가 바르지 못해 분석에 실패하였습니다.", 0
-    elif math.isnan(leftPressure[0]) or math.isnan(rightPressure[0]):
-        return 0, "조금만 더천천히 걸어주세요!", 0
+    
     left = copy.deepcopy(leftPressure)
     right = copy.deepcopy(rightPressure)
     # 형태를 변화시켜주기 위해 복사해서 사용
@@ -72,10 +73,13 @@ def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질
         corr = ele_r.corr(method='pearson')
         ele_mean.append(corr.values[0][1])
     dic = {0:avgList(nor_mean), 1:avgList(out_mean), 2:avgList(in_mean), 3:avgList(crane_mean), 4:avgList(ele_mean)}
+    if math.isnan(dic[0]) and math.isnan(dic[1]) and math.isnan(dic[2]) and math.isnan(dic[3]) and math.isnan(dic[4]) :
+        return 0, "현재 가지고 있는 걸음걸이 DB로는 파악이 불가합니다.", 0
     # 어떤 걸음걸이가 제일 상관있는지를 보기 위해서 dictionary로 선언
     dic_reverse = sorted(dic.items(), reverse=True, key=lambda item:item[1])
     #상관계수에 대해 내림차순 정렬
-
+    if math.isnan(dic[0]) : 
+	    dic[0] = -1
     percent = (int)((dic[0]+1)*50); #올바른 걸음걸이 척도 계산을 위한 상관계수(-1.0~+1.0)를 percentage(0~100)로 변경
     comment = diseasePrediction() # 각 걸음걸이 comment 및 질병예측 commnet를 가져오기 위한 class선언
     return percent, comment.getComment(dic_reverse[0][0]), dic_reverse[0][0];
