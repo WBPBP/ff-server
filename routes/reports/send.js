@@ -61,7 +61,7 @@ router.post('/info',function(req,res,next){
 			args:[json]
 		};
 		date = getFormatDate(date);
-		PythonShell.run('/home/ec2-user/myapp/model/Execute.py',options,function(err,results){
+		PythonShell.run('/home/ec2-user/myapp/model/Execute_save.py',options,function(err,results){
 			if(err){
 				console.log('fail');
 				console.log(err);
