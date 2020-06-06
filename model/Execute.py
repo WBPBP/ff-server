@@ -24,6 +24,12 @@ heelPressureDifference = data['heelPressureDifference']
 leftPressure = data['leftPressure']
 rightPressure = data['rightPressure']
 
+if len(leftPressure)==120 and len(rightPressure) == 120:
+    f = open("/home/ec2-user/myapp/model/GaitData.txt", 'a')
+    f. write("left : " + str(leftPressure) + "\n")
+    f. write("right : " + str(rightPressure) + "\n\n")
+    f.close()
+
 '''
 # 더미 데이터 생성
 verticalWeightBias_Left = random.random()

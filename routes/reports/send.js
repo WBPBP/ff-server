@@ -61,19 +61,20 @@ router.post('/info',function(req,res,next){
 			args:[json]
 		};
 		date = getFormatDate(date);
-		PythonShell.run('/home/ec2-user/myapp/model/Execute_save.py',options,function(err,results){
+		PythonShell.run('/home/ec2-user/myapp/model/Execute.py',options,function(err,results){
 			if(err){
-				console.log('fail');
+				console.log("that's not my fault lol")
 				console.log(err);
 				res.sendStatus(500);
 			}
 			else if(req.session.displayName){
-				console.log(req.session.displayName);			
+				//console.log(req.session.displayName);			
 				console.log('잘 넘어갔다왔음');		
 				db.all('SELECT user_id from user WHERE user_email = ?',req.session.displayName, function(err,db_data){
 					if(err){
 						res.sendStatus(500);
 						console.log('here is problem');
+						console.log("that's not my fault lol")
 					}
 					else{
 						user_id= db_data[0].user_id;

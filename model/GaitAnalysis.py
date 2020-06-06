@@ -8,10 +8,11 @@ def avgList(list): # 형식이 list인 경우 전체 원소에 대한 평균을 
     return sum(list, 0.0)/len(list)
 
 def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
-    if math.isnan(leftPressure[0]) or math.isnan(rightPressure[0]):
-        return 0, "조금만 더천천히 걸어주세요!", 0
     if len(leftPressure)!=120 or len(rightPressure) != 120:
-        return 0, "결과가 바르지 못해 분석에 실패하였습니다.", 0
+        return 0, "결과가 바르지 못해 분석에 실패하였습니다.", -1
+    if math.isnan(leftPressure[0]) or math.isnan(rightPressure[0]):
+        return 0, "조금만 더천천히 걸어주세요!", -1
+
     
     left = copy.deepcopy(leftPressure)
     right = copy.deepcopy(rightPressure)
@@ -84,7 +85,7 @@ def walkCheck(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질
 	    dic[0] = -1
     percent = (int)((dic[0]+1)*50); #올바른 걸음걸이 척도 계산을 위한 상관계수(-1.0~+1.0)를 percentage(0~100)로 변경
     if dic_reverse[0][1] < 0.5:
-        return 0, "현재 가지고 있는 걸음걸이 DB로는 파악이 불가한 걸음걸이입니다.", 0
+        return 0, "현재 가지고 있는 걸음걸이 DB로는 파악이 불가한 걸음걸이입니다.", -1
     comment = diseasePrediction() # 각 걸음걸이 comment 및 질병예측 commnet를 가져오기 위한 class선언
     return percent, comment.getComment(dic_reverse[0][0]), dic_reverse[0][0];
     #올바른 걸음걸이 척도, 걸음걸이 comment, 질병 아이콘을 위해서(0~4)값 반환

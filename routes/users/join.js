@@ -27,6 +27,7 @@ router.post('/addUser',function(req,res,next){
 	crypto.randomBytes(32,function(err,buffer){
 		if(err){
 			res.sendStatus(500);
+			console.log("that's not my fault lol")
 		}
 		else{
 			let salt = buffer.toString('base64');

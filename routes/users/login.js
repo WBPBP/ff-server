@@ -50,7 +50,7 @@ router.post('/in', function (req, res, next) {
 					let saltPWD = hashed.toString('base64');
 					if (saltPWD === user.user_PWD) {
 						req.session.displayName = user.email_ID;
-						console.log(id,' is logined');
+						console.log(id,' is logged on');
 						res.sendStatus(200);
 					} 
 					else {
