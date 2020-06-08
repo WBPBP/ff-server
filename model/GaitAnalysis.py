@@ -15,17 +15,6 @@ def calculateDistance(x1, y1, x2, y2):
     return math.sqrt((d1**2)+(d2**2))
 
 def CheckEachSensorChange(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
-
-
-
-
-
-
-
-
-
-    
-
     left = copy.deepcopy(leftPressure)
     right = copy.deepcopy(rightPressure)
     # 형태를 변화시켜주기 위해 복사해서 사용
@@ -137,7 +126,7 @@ def CheckEachSensorChange(leftPressure, rightPressure): # 걸음걸이 습관 �
     if dic_reverse[0][1] < 0.3:
         return 0, -1, -1
     # 각 걸음걸이 comment 및 질병예측 commnet를 가져오기 위한 class선언
-    return percent, dic_reverse[0][0], dic_reverse[0][1]
+    return percent, dic_reverse[0][0], dic[dic_reverse[0][0]]
 
 
 
@@ -227,7 +216,7 @@ def COPAnalysis(leftPressure, rightPressure):
     similarity[4] = (sum/2.0)
     sum = 0
     dic_reverse = sorted(similarity.items(), reverse=False, key=lambda item: item[1])
-    return dic_reverse[0][0], dic_reverse[0][1]
+    return dic_reverse[0][0], similarity[dic_reverse[0][0]]
 
 
 def walkCheck(leftPressure, rightPressure):
@@ -242,12 +231,12 @@ def walkCheck(leftPressure, rightPressure):
     comment = diseasePrediction()
     if disease_cop == disease_relative :
         return percent, comment.getComment(disease_cop), disease_cop
-    elif similarity > 5:
+    elif similarity > 2:
         if disease_relative !=-1:
             return percent, comment.getComment(disease_relative), disease_relative
-        elif similarity > 10:
+        elif similarity > 12:
             return 0, "현재 가지고 있는 걸음걸이 DB로는 파악이 불가한 걸음걸이입니다.", -1
         else :
-            return 40, comment.getComment(disease_cop), disease_cop
+            return percent, comment.getComment(disease_cop), disease_cop
     else :
-        return 80, comment.getComment(disease_cop), disease_cop
+        return percent, comment.getComment(disease_cop), disease_cop
