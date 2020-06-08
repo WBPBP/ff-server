@@ -10,19 +10,25 @@ def isNumber(s) :
 def analysisStaticPressureResult(verticalWeightBias_Left, verticalWeightBias_Right, horizontalWeightBias, heelPressureDifference):
     if not isNumber(verticalWeightBias_Left) or not isNumber(verticalWeightBias_Right) or not isNumber(horizontalWeightBias) or not isNumber(heelPressureDifference):
         return "검사 결과 분석이 불가능합니다."
-    comment, leftState = verticalBalanceCheck_Left(verticalWeightBias_Left)
-    comment += verticalBalanceCheck_Right(verticalWeightBias_Right, leftState)
-    comment += horizontalBalanceCheck(horizontalWeightBias)
+    if verticalWeightBias_Left==-1 :
+        coment = ""
+    else:
+        comment, leftState = verticalBalanceCheck_Left(verticalWeightBias_Left)
+
+    if verticalWeightBias_Right != -1 :
+        comment += verticalBalanceCheck_Right(verticalWeightBias_Right, leftState)
+    if horizontalWeightBias != -1:
+        comment += horizontalBalanceCheck(horizontalWeightBias)
     comment += scoliosisDiagnosis(heelPressureDifference)
     return comment
 
 # 왼발의 앞/뒤꿈치의 균형 판단
 def verticalBalanceCheck_Left(verticalWeightBias_Left):
     comment = "양 발 중 왼발은 "
-    if verticalWeightBias_Left < 0.48:
+    if verticalWeightBias_Left < 0.49:
         comment += "무게중심이 앞꿈치보다 뒤꿈치로 쏠려있는 경향이 보입니다."
         leftState = 0
-    elif verticalWeightBias_Left < 0.52:
+    elif verticalWeightBias_Left > 0.51:
         comment += "무게중심이 뒤꿈치보다 앞꿈치로 쏠려있는 경향이 보입니다."
         leftState = 1
     else:
@@ -32,10 +38,10 @@ def verticalBalanceCheck_Left(verticalWeightBias_Left):
 
 # 오른발의 앞/뒤꿈치의 균형 판단
 def verticalBalanceCheck_Right(verticalWeightBias_Right, leftState):
-    if verticalWeightBias_Right < 0.48:
+    if verticalWeightBias_Right < 0.49:
         comment = " 오른발 또한 " if(leftState==0) else " 하지만 오른발은"
         comment += "무게중심이 앞꿈치보다 뒤꿈치로 쏠려있는 경향이 보입니다."
-    elif verticalWeightBias_Right < 0.52:
+    elif verticalWeightBias_Right > 0.51:
         comment = " 오른발 또한 " if (leftState == 1) else " 하지만 오른발은"
         comment += "무게중심이 뒤꿈치보다 앞꿈치로 쏠려있는 경향이 보입니다."
     else:
@@ -46,9 +52,9 @@ def verticalBalanceCheck_Right(verticalWeightBias_Right, leftState):
 # 양 발의 무게중심이 어느 쪽으로 치우쳐져 았는 판단
 def horizontalBalanceCheck(horizontalWeightBias):
     comment = ""
-    if horizontalWeightBias < 0.48:  # '왼-오'로 계산을 했기 때문에 압력 차값이 0에 가까울수록 몸의 무게중심이 왼발에 치우쳐져 있음
+    if horizontalWeightBias < 0.49:  # '왼-오'로 계산을 했기 때문에 압력 차값이 0에 가까울수록 몸의 무게중심이 왼발에 치우쳐져 있음
         comment = " \n몸의 무게중심은 왼쪽으로 치우쳐져 있는 경향이 보입니다."
-    elif horizontalWeightBias < 0.52:  # 압력 차 편향이 1에 가까울수록 몸의 무게중심이 오른발에 치우쳐져 있음
+    elif horizontalWeightBias > 0.51:  # 압력 차 편향이 1에 가까울수록 몸의 무게중심이 오른발에 치우쳐져 있음
         comment = " \n몸의 무게중심은 오른쪽으로 치우쳐져 있는 경향이 보입니다."
     else:  # 압력 차 편향이 0.5에 가까울수록 무게중심이 잘 잡혀있음
         comment = " \n몸 전체의 무게중심은 몸무게가 양발에 고르게 분포해있어 몸의 균형은 안정적으로 보입니다."
