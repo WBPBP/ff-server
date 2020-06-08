@@ -8,12 +8,24 @@ from WalkData import normalGait, out_toedGait, in_toedGait, craneGait, elevenGai
 def avgList(list): # 형식이 list인 경우 전체 원소에 대한 평균을 구하는 함수
     return sum(list, 0.0)/len(list)
 
+
 def calculateDistance(x1, y1, x2, y2):
     d1 = x2 - x1;
     d2 = y2 - y1;
     return math.sqrt((d1**2)+(d2**2))
 
 def CheckEachSensorChange(leftPressure, rightPressure): # 걸음걸이 습관 파악 및 질병예측을 위한 함수
+
+
+
+
+
+
+
+
+
+    
+
     left = copy.deepcopy(leftPressure)
     right = copy.deepcopy(rightPressure)
     # 형태를 변화시켜주기 위해 복사해서 사용
@@ -110,18 +122,28 @@ def CheckEachSensorChange(leftPressure, rightPressure): # 걸음걸이 습관 �
             corr.values[0][1] = 0;
         ele_mean.append(corr.values[0][1])
     dic = {0:avgList(nor_mean), 1:avgList(out_mean), 2:avgList(in_mean), 3:avgList(crane_mean), 4:avgList(ele_mean)}
+    if math.isnan(dic[0]) and math.isnan(dic[1]) and math.isnan(dic[2]) and math.isnan(dic[3]) and math.isnan(dic[4]) :
+        return 0, "현재 가지고 있는 걸음걸이 DB로는 파악이 불가합니다.", 0
     # 어떤 걸음걸이가 제일 상관있는지를 보기 위해서 dictionary로 선언
 
     dic_reverse = sorted(dic.items(), reverse=True, key=lambda item:item[1])
     if math.isnan(dic_reverse[0][1]):
         return 0, -1, -1
     #상관계수에 대해 내림차순 정렬
-
+    if math.isnan(dic[0]) : 
+	    dic[0] = -1
     percent = (int)((dic[0]+1)*50); #올바른 걸음걸이 척도 계산을 위한 상관계수(-1.0~+1.0)를 percentage(0~100)로 변경
+
     if dic_reverse[0][1] < 0.3:
         return 0, -1, -1
     # 각 걸음걸이 comment 및 질병예측 commnet를 가져오기 위한 class선언
     return percent, dic_reverse[0][0], dic_reverse[0][1]
+
+
+
+
+
+
     #올바른 걸음걸이 척도, 걸음걸이 comment, 질병 아이콘을 위해서(0~4)값 반환
     #{0:"정상걸음", 1:"팔자걸음", 2:"안짱걸음", 3:"학다리 걸음", 4:"11자 걸음"}
 

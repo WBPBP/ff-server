@@ -49,7 +49,7 @@ router.post('/info',function(req,res,next){
 		return  year + '' + month + '' + day+'_'+hour+''+minute+''+second;
 	}
 	const features = req.body;
-	if (features.verticalWeightBias_Left && features.verticalWeightBias_Right && features.horizontalWeightBias && features.heelPressureDifference && features.leftPressure && features.rightPressure){
+	if (features.verticalWeightBias_Left!=undefined && features.verticalWeightBias_Right!= undefined && features.horizontalWeightBias!=undefined && features.heelPressureDifference!=undefined && features.leftPressure!=undefined && features.rightPressure!=undefined){
 		
 		var json = JSON.stringify(features);
 		var options = {
@@ -63,23 +63,25 @@ router.post('/info',function(req,res,next){
 		date = getFormatDate(date);
 		PythonShell.run('/home/ec2-user/myapp/model/Execute.py',options,function(err,results){
 			if(err){
-				console.log('fail');
+				console.log("that's not my fault lol")
 				console.log(err);
 				res.sendStatus(500);
 			}
 			else if(req.session.displayName){
-				console.log(req.session.displayName);			
+				//console.log(req.session.displayName);			
 				console.log('잘 넘어갔다왔음');		
 				db.all('SELECT user_id from user WHERE user_email = ?',req.session.displayName, function(err,db_data){
 					if(err){
 						res.sendStatus(500);
 						console.log('here is problem');
+						console.log("that's not my fault lol")
 					}
 					else{
 						user_id= db_data[0].user_id;
-						const query =`insert into report (user_id,contents)values('${user_id}','${results}')`;
+						const query =`insert into report (user_id,file_name,contents)values('${user_id}','${date}','${results}')`;
 						db.run(query,function(err,db_data){ //인서트 하고 성공했다는 메세지 보내준다. 
-							res.json(results);
+							console.log(results[0]);
+							res.send(results[0]);
 							console.log('보고서 완료');
 						}); 
 								

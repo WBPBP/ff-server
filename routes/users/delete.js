@@ -19,6 +19,7 @@ router.delete('/', function (req, res, next) {
 	db.run('DELETE FROM user WHERE user_email = ? ',req.session.displayName,function(err){
 		if(err){
 			res.sendStatus(500);
+			console.log("that's not my fault lol")
 		}
 		else{
 			res.sendStatus(200);

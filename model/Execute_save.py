@@ -13,7 +13,7 @@ leftPressure = data['leftPressure']
 rightPressure = data['rightPressure']
 
 
-f = open("./GaitData.txt", 'a')
+f = open("/home/ec2-user/myapp/model/GaitData.txt", 'a')
 f. write("left : " + str(leftPressure) + "\n")
 f. write("right : " + str(rightPressure) + "\n\n")
 f.close()
