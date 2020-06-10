@@ -1,5 +1,10 @@
 # preshoes-server
 
+[![GitHub last commit](https://img.shields.io/github/last-commit/wbpbp/preshoes-server)](https://github.com/wbpbp/preshoes-server/commits)
+[![GitHub stars](https://img.shields.io/github/stars/wbpbp/preshoes-server?style=shield)](https://github.com/wbpbp/preshoes-server/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/wbpbp/preshoes-server)](https://github.com/wbpbp/preshoes-server/issues)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/wbpbp/preshoes-server)
+
 사용자의 정보와 보고서를 저장해주는 백업 서버
 
 ## 디렉토리 구조
