@@ -17,7 +17,6 @@ app
   └ model                       → 보고서작성을 위해 데이터 분석해주는 파이썬 코드 파일
   └ package.json                →
   └ README.md                   → 
-  └ sessions                    →계정에 세션이 생기면 여기에 생성 
 ~~~
 
 ## 데이터베이스
@@ -38,8 +37,9 @@ app
 
 **사용자의 계정과 보고서 파일명이 저장된 테이블**
 
-- `user_id`: 이메일 주소 (text)
-- `contents`: 파일 내용 (json) 
+- `user_id` : 이메일 주소 (text)
+- `file_name` : 파일명(text) 날짜+시간으로 저장
+- `contents` : 파일 내용 (json) 
 
 
 ## API
@@ -52,8 +52,8 @@ app
 
 `application/json`
 
-- `user_email`: 이메일 주소 (text)
-- `user_pwd`: 비밀번호 (text)
+- `user_email` : 이메일 주소 (text)
+- `user_pwd` : 비밀번호 (text)
 - `salt` : 비교해야하는 salt 값 (text)
 
 #### 응답 코드
@@ -133,7 +133,7 @@ app
 안드로이드에서의 입력값을 json파일로 변환 후 파이썬파일에 있는 함수 리턴값을 다시 가져와서 그 내용을 안드로이드에 전송 후 db에 저장
 
 파일명은 만들어지는 당시의 날짜+시간으로 생성.    
-유저의 id와 파일내용으로 `user.db`의 `report` table에 저장     
+유저의 id와 파일명 파일내용으로 `user.db`의 `report` table에 저장     
 
 #### 요청 모델
  - json     
